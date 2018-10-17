@@ -7,8 +7,8 @@
 # TODO: only create jsonnet symlink if jsonnet is not already present
 
 export CCF_SRC_REPO_URL=https://github.com/shah/container-config-framework
-export CCF_INSTALL_PATH="${CCF_INSTALL_PATH:-default /opt/container-config-framework}"
-export CCF_COMPONENT_NAME="${CCF_COMPONENT_NAME:-default container-conf}"
+export CCF_INSTALL_PATH="${CCF_INSTALL_PATH:-/opt/container-config-framework}"
+export CCF_COMPONENT_NAME="${CCF_COMPONENT_NAME:-container-conf}"
 
 sudo apt install make git jq
 
