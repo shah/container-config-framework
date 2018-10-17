@@ -175,8 +175,8 @@ check-dependencies: check-jsonnet check-jq check-docker check-docker-compose che
 	make -v | head -1
 	echo "[*] Shell: $$SHELL"
 
-check-jsonnet:
 JSONNET_INSTALLED := $(shell command -v jsonnet 2> /dev/null)
+check-jsonnet:
 ifndef JSONNET_INSTALLED
 	echo "[ ] Did not find jsonnet, run this to set it up:"
 	echo "    sudo ln -s /opt/container-config-framework/bin/jsonnet-v0.11.2 /usr/bin/jsonnet"
@@ -185,8 +185,8 @@ else
 	jsonnet --version
 endif
 
-check-jq:
 JQ_INSTALLED := $(shell command -v jq 2> /dev/null)
+check-jq:
 ifndef JQ_INSTALLED
 	echo "[ ] Did not find jq, install using:"
 	echo "    sudo apt-get install jq"
@@ -195,16 +195,16 @@ else
 	jq --version
 endif
 
-check-user-in-docker-group:
 USER_IN_DOCKER_GROUP := $(shell groups $$USER | grep '\bdocker\b')
+check-user-in-docker-group:
 ifndef USER_IN_DOCKER_GROUP
 	echo "[ ] User $$USER is not in docker group, sudo will be required and scripts won't work."
 else
 	echo "[*] User $$USER is in docker group"
 endif
 
-check-docker:
 DOCKER_INSTALLED := $(shell command -v docker 2> /dev/null)
+check-docker:
 ifndef DOCKER_INSTALLED
 	echo "[ ] Unable to find docker, install it using 'make setup-docker'."
 else
@@ -212,8 +212,8 @@ else
 	docker --version
 endif
 
-check-docker-compose: check-docker
 DOCKER_COMPOSE_INSTALLED := $(shell command -v docker-compose 2> /dev/null)
+check-docker-compose: check-docker
 ifndef DOCKER_COMPOSE_INSTALLED
 	echo "[ ] Unable to find docker-compose, install it using 'make setup-docker'."
 else
@@ -221,9 +221,9 @@ else
 	docker-compose --version
 endif
 
-check-docker-networks: check-docker
 DOCKER_NETWORK_DEFAULT := 'appliance'
 DOCKER_NETWORKS_SETUP := $(shell sudo docker network ls | grep $(DOCKER_NETWORK_DEFAULT))
+check-docker-networks: check-docker
 ifndef DOCKER_NETWORKS_SETUP
 	echo "[ ] Docker networks not setup yet, configure it with 'make setup-docker-networks'."
 else
