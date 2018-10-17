@@ -13,12 +13,8 @@ Prerequisites:
 
 Intial setup:
 
-    sudo apt install curl
-    curl https://raw.github.com/shah/container-config-framework/bin/setup-CCF.sh | bash 
+    curl https://raw.githubusercontent.com/shah/container-config-framework/master/bin/setup-CCF.sh | bash
 
-    cd /usr/lib/container-conf
-    make check-dependencies
-    
 To upgrade:
 
     cd /opt/container-config-framework
