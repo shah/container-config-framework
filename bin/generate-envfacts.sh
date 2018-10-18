@@ -13,7 +13,7 @@ if [ ! -d "$DEST_PATH" ]; then
     exit 1
 fi
 
-CONTAINER_CONF_JSONNET_TMPL=${CONTAINER_CONF_JSONNET_TMPL:-$(CCF_HOME)/etc/container.facts.ccf-tmpl.jsonnet}
+CONTAINER_CONF_JSONNET_TMPL=${CONTAINER_CONF_JSONNET_TMPL:-$CCF_HOME/etc/container.facts.ccf-tmpl.jsonnet}
 CONTAINER_FACTS_GENERATED_FILE=container.facts.json
 
 jsonnet --ext-str CCF_HOME=$CCF_HOME \
