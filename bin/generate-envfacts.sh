@@ -13,21 +13,28 @@ if [ ! -d "$DEST_PATH" ]; then
     exit 1
 fi
 
+osqueryFacts() {
+	osqueryi --json $2 | jq '.[0]' > $DEST_PATH/$1.facts.json
+}
+
 echo "Generating facts in $DEST_PATH using JSONNET_PATH $JSONNET_PATH"
 
-CONTAINER_CONF_JSONNET_TMPL=${CONTAINER_CONF_JSONNET_TMPL:-$CCF_HOME/etc/container.facts.ccf-tmpl.jsonnet}
-CONTAINER_FACTS_GENERATED_FILE=container.facts.json
+osqueryFacts "system-localhost" "select * from system_info"
+osqueryFacts "interfaces-localhost" "select * from interface_addresses"
+
+CONTEXT_FACTS_JSONNET_TMPL=${CONTEXT_FACTS_JSONNET_TMPL:-$CCF_HOME/etc/context.facts.ccf-tmpl.jsonnet}
+CONTEXT_FACTS_GENERATED_FILE=${CONTEXT_FACTS_GENERATED_FILE:-context.facts.json}
 
 jsonnet --ext-str CCF_HOME=$CCF_HOME \
 		--ext-str GENERATED_ON="`date`" \
-		--ext-str DOCKER_HOST_IP_ADDR=`/sbin/ifconfig eth0 | grep -i mask | awk '{print $$2}'| cut -f2 -d:` \
+		--ext-str JSONNET_PATH=$JSONNET_PATH \
 		--ext-str containerName=$CONTAINER_NAME \
 		--ext-str containerDefnHome=$CONTAINER_DEFN_HOME \
 		--ext-str currentUserName="`whoami`" \
 		--ext-str currentUserId="`id -u`" \
 		--ext-str currentUserGroupId="id -g" \
 		--ext-str currentUserHome=$HOME \
-		--output-file $DEST_PATH/$CONTAINER_FACTS_GENERATED_FILE \
-		$CONTAINER_CONF_JSONNET_TMPL
+		--output-file $DEST_PATH/$CONTEXT_FACTS_GENERATED_FILE \
+		$CONTEXT_FACTS_JSONNET_TMPL
 
-echo "Generated $CONTAINER_FACTS_GENERATED_FILE from $CONTAINER_CONF_JSONNET_TMPL"
+echo "Generated $CONTEXT_FACTS_GENERATED_FILE from $CONTEXT_FACTS_JSONNET_TMPL"

@@ -3,7 +3,7 @@
 {
 	CCF_HOME : std.extVar('CCF_HOME'),
 	GENERATED_ON : std.extVar('GENERATED_ON'),
-	DOCKER_HOST_IP_ADDR : std.extVar('DOCKER_HOST_IP_ADDR'),
+	JSONNET_PATH : std.extVar('JSONNET_PATH'),
 
 	containerName : std.extVar('containerName'),
 	containerDefnHome : std.extVar('containerDefnHome'),
