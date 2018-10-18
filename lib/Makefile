@@ -62,7 +62,7 @@ generate-container-conf:
 	echo $(CONTAINER_DEFN_JSONNET_GENERATED_FILES_LIST) >> .gitignore
 	echo $(DELETE_GENERATED_FILES_SCRIPT) >> .gitignore
 	cat $(CONTAINER_DEFN_JSONNET_GENERATED_FILES_LIST) | sed 's/^\.\///' >> .gitignore
-	cat $(CONTAINER_DEFN_JSONNET_GENERATED_FILES_LIST) | sed 's/^/rm -f/' > $(DELETE_GENERATED_FILES_SCRIPT)
+	cat $(CONTAINER_DEFN_JSONNET_GENERATED_FILES_LIST) | sed 's/^/rm -f /' > $(DELETE_GENERATED_FILES_SCRIPT)
 
 clean-generated-container-conf:
 	echo "Deleted $(CONTAINER_FACTS_GENERATED_FILE), generated from $(CONTAINER_CONF_JSONNET_TMPL)"
