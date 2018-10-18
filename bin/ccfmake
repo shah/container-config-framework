@@ -1,0 +1,6 @@
+#!/bin/env bash
+
+export CCF_HOME="${CCF_HOME:-/opt/container-config-framework}"
+export CCF_LIB_PATH=$CCF_HOME/lib
+
+make -f $CCF_LIB_PATH/Makefile
