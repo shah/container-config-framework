@@ -13,6 +13,8 @@ sudo apt install make git jq
 
 sudo mkdir -p $CCF_HOME
 sudo git clone $CCF_SRC_REPO_URL $CCF_HOME
+sudo chmod +x $CCF_HOME/bin/*
+sudo ln -s $CCF_HOME/bin/ccfinit /usr/bin/ccfinit
 sudo ln -s $CCF_HOME/bin/ccfmake /usr/bin/ccfmake
 sudo ln -s $CCF_HOME/bin/jsonnet-v0.11.2 /usr/bin/jsonnet
 
