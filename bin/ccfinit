@@ -3,7 +3,7 @@
 # Initialize a CCF-managed container directory with a defn file from github.com/shah/ccf-container-defns
 #     mkdir <container-name>
 #     cd <container-name>
-#     ccfinit <container-name>.ccf-defn.jsonnet
+#     ccfinit <container-name>
 
 if [ -z "$1" ]; then
     echo "A CCF jsonnet container definition identifier was expected as the first parameter."
