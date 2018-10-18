@@ -14,7 +14,7 @@ if [ ! -d "$DEST_PATH" ]; then
 fi
 
 osqueryFacts() {
-	osqueryi --json $2 | jq '.[0]' > $DEST_PATH/$1.ccf-facts.json
+	osqueryi --json "$2" | jq '.[0]' > $DEST_PATH/$1.ccf-facts.json
 }
 
 echo "Generating facts in $DEST_PATH using JSONNET_PATH $JSONNET_PATH"
