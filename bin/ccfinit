@@ -10,11 +10,14 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-CCF_CONTAINER_DEFN_URL=https://raw.githubusercontent.com/shah/ccf-container-defns/master/$1.ccf-defn.jsonnet
+CCF_CONTAINER_DEFN_REPO_URL=https://raw.githubusercontent.com/shah/ccf-container-defns/master/
+CCF_CONTAINER_DEFN_URL=$CCF_CONTAINER_DEFN_REPO_URL/$1.ccf-defn.jsonnet
 curl -s --head $CCF_CONTAINER_DEFN_URL | head -n 1 | grep "HTTP/1.[01] [23].." > /dev/null
 if [ $? = 1 ]; then
     echo "CCF jsonnet container definition file $CCF_CONTAINER_DEFN_URL not found."
     exit 2
 fi
 
-curl $CCF_CONTAINER_DEFN_URL > container.ccf-defn.jsonnet
+curl -s $CCF_CONTAINER_DEFN_URL > container.ccf-defn.jsonnet
+curl -f -O -J -s $CCF_CONTAINER_DEFN_REPO_URL/$1.ccf-conf.jsonnet
+curl -f -O -J -s $CCF_CONTAINER_DEFN_REPO_URL/$1.secrets.ccf-conf.jsonnet
