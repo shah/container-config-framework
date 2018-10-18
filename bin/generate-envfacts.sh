@@ -13,14 +13,18 @@ if [ ! -d "$DEST_PATH" ]; then
     exit 1
 fi
 
-osqueryFacts() {
+osqueryFactsSingleRow() {
 	osqueryi --json "$2" | jq '.[0]' > $DEST_PATH/$1.ccf-facts.json
+}
+
+osqueryFactsMultiRows() {
+	osqueryi --json "$2" > $DEST_PATH/$1.ccf-facts.json
 }
 
 echo "Generating facts in $DEST_PATH using JSONNET_PATH $JSONNET_PATH"
 
-osqueryFacts "system-localhost" "select * from system_info"
-osqueryFacts "interfaces-localhost" "select * from interface_addresses"
+osqueryFactsSingleRow "system-localhost" "select * from system_info"
+osqueryFactsMultiRows "interfaces-localhost" "select * from interface_addresses"
 
 CONTEXT_FACTS_JSONNET_TMPL=${CONTEXT_FACTS_JSONNET_TMPL:-$CCF_HOME/etc/context.ccf-facts.ccf-tmpl.jsonnet}
 CONTEXT_FACTS_GENERATED_FILE=${CONTEXT_FACTS_GENERATED_FILE:-context.ccf-facts.json}
