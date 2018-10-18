@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 # Initialize a CCF-managed container directory with a defn file from github.com/shah/ccf-container-defns
 #     mkdir <container-name>
