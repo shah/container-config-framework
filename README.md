@@ -49,7 +49,7 @@ anywhere but follows these conventions:
 * **CCF_HOME/bin/ccfmake** is a convenience script to run the Makefile in a **CDH** if CCF_HOME/lib/Makefile 
   is not symlink'd. This script is symlink'd as /usr/bin/ccfmake by the installer.
 * **CCF_HOME/bin/ccfinit** is a convenience script to download container definition files from a common repo.
-  This script is symlink'd as /usr/bin/ccfmake by the installer.
+  This script is symlink'd as /usr/bin/ccfinit by the installer.
 
 ## Container Makefile
 
