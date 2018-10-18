@@ -18,7 +18,7 @@ CONTAINER_FACTS_GENERATED_FILE=container.facts.json
 
 jsonnet --ext-str CCF_HOME=$CCF_HOME \
 		--ext-str GENERATED_ON="`date`" \
-		--ext-str DOCKER_HOST_IP_ADDR=$(shell echo `/sbin/ifconfig eth0 | grep -i mask | awk '{print $$2}'| cut -f2 -d:`) \
+		--ext-str DOCKER_HOST_IP_ADDR=`/sbin/ifconfig eth0 | grep -i mask | awk '{print $$2}'| cut -f2 -d:` \
 		--ext-str containerName=$CONTAINER_NAME \
 		--ext-str containerDefnHome=$CONTAINER_DEFN_HOME \
 		--ext-str currentUserName="`whoami`" \
