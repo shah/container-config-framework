@@ -224,7 +224,6 @@ endif
 check-osquery: 
 ifndef OSQUERY_INSTALLED
 	echo "[ ] Unable to find osquery, install it from https://osquery.io/downloads/official."
-	echo "    If you're not using osquery to gather environment facts, it's safe to ignore."
 else
 	printf "[*] "
 	osqueryi --version
