@@ -247,8 +247,8 @@ help: generate-container-conf
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 	@echo ''	
 	@echo 'JSONNET_PATH=$(JSONNET_PATH)'
-	@echo '$(ENVFACTS_GENERATOR_DEST_PATH):'
-	ls -al $(ENVFACTS_GENERATOR_DEST_PATH)
+	@echo '$(ENVFACTS_GENERATOR_DEST_PATH_RELATIVE):'
+	ls -al $(ENVFACTS_GENERATOR_DEST_PATH_ABSOLUTE)
 
 ifneq ("$(wildcard $(CUSTOM_INCLUDE_FILE))","")
 include $(CUSTOM_INCLUDE_FILE)
