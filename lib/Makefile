@@ -76,6 +76,9 @@ configure: generate-container-conf
 		$(CUSTOM_POST_CONFIGURE_SCRIPT_NAME) $(CONTAINER_NAME)
 	fi
 
+## Opposite of configure, remove all generated artifacts and "reset" directory
+unconfigure: clean-generated-container-conf
+
 .ONESHELL:
 ## Start the container and all dependencies
 start: configure
