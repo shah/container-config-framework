@@ -173,7 +173,7 @@ clean-dangling-untagged-container-images:
 	docker images -q --filter dangling=true | xargs docker rmi
 
 ## See if all developer dependencies are installed
-check-dependencies: check-jsonnet check-jq check-docker check-docker-compose check-user-in-docker-group check-docker-networks
+check-dependencies: check-jsonnet check-jq check-docker check-docker-compose check-user-in-docker-group
 	printf "[*] "
 	make -v | head -1
 	echo "[*] Shell: $$SHELL"
@@ -222,15 +222,6 @@ ifndef DOCKER_COMPOSE_INSTALLED
 else
 	printf "[*] "
 	docker-compose --version
-endif
-
-DOCKER_NETWORK_DEFAULT := 'appliance'
-DOCKER_NETWORKS_SETUP := $(shell sudo docker network ls | grep $(DOCKER_NETWORK_DEFAULT))
-check-docker-networks: check-docker
-ifndef DOCKER_NETWORKS_SETUP
-	echo "[ ] Docker networks not setup yet, configure it with 'make setup-docker-networks'."
-else
-	echo "[*] Docker networks setup"
 endif
 
 TARGET_MAX_CHAR_NUM=10
