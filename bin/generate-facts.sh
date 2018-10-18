@@ -17,21 +17,18 @@ osqueryFactsSingleRow() {
 	osqueryi --json "$2" | jq '.[0]' > $DEST_PATH/$1.ccf-facts.json
 }
 
-osqueryFactsMultiRows() {
+osqueryFactsMultipleRows() {
 	osqueryi --json "$2" > $DEST_PATH/$1.ccf-facts.json
 }
 
 generateFacts() {
 	jsonnet $1 | jq -r '.osQueries.singleRow[] | "osqueryFactsSingleRow \(.name) \"\(.query)\""' | source /dev/stdin
-	jsonnet $1 | jq -r '.osQueries.multipleRows[] | "osqueryFactsSingleRow \(.name) \"\(.query)\""' | source /dev/stdin
+	jsonnet $1 | jq -r '.osQueries.multipleRows[] | "osqueryFactsMultipleRows \(.name) \"\(.query)\""' | source /dev/stdin
 }
 
 echo "Generating facts in $DEST_PATH using JSONNET_PATH $JSONNET_PATH"
 
 generateFacts $CCF_HOME/etc/facts-generator.ccf-conf.jsonnet
-
-#osqueryFactsSingleRow "system-localhost" "select * from system_info"
-#osqueryFactsMultiRows "interfaces-localhost" "select * from interface_addresses"
 
 CONTEXT_FACTS_JSONNET_TMPL=${CONTEXT_FACTS_JSONNET_TMPL:-$CCF_HOME/etc/context.ccf-facts.ccf-tmpl.jsonnet}
 CONTEXT_FACTS_GENERATED_FILE=${CONTEXT_FACTS_GENERATED_FILE:-context.ccf-facts.json}
