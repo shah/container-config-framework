@@ -32,7 +32,7 @@ CUSTOM_INCLUDE_FILE := ./container.make.inc
 # This is the "environment facts bootstrap" scripts which figures out what's in the
 # runtime environment and stores that data in the destination path. That destination
 # path is then available in JSONNET_PATH for use in container.ccf-defn.jsonnet.
-ENVFACTS_GENERATOR_SCRIPT ?= $(CCF_HOME)/bin/generate-envfacts.sh
+ENVFACTS_GENERATOR_SCRIPT ?= $(CCF_HOME)/bin/generate-facts.sh
 ENVFACTS_GENERATOR_DEST_PATH_RELATIVE ?= .ccf_facts
 ENVFACTS_GENERATOR_DEST_PATH_ABSOLUTE ?= $(CONTAINER_DEFN_HOME)/.ccf_facts
 
