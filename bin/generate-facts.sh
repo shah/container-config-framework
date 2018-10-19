@@ -21,9 +21,19 @@ osqueryFactsMultipleRows() {
 	osqueryi --json "$2" > $DEST_PATH/$1.ccf-facts.json
 }
 
+shellEvalFacts() {
+	textValue=eval("$3")
+	if [ -f $DEST_PATH/$1.ccf-facts.json ]; then
+		cat $DEST_PATH/$1.ccf-facts.json | jq --arg value "$textValue" '.["$2"] = $value' > $DEST_PATH/$1.ccf-facts.json
+	else
+		echo "{\"$2\": \"$textValue\"}" | jq > $DEST_PATH/$1.ccf-facts.json
+	fi
+}
+
 generateFacts() {
 	jsonnet $1 | jq -r '.osQueries.singleRow[] | "osqueryFactsSingleRow \(.name) \"\(.query)\""' | source /dev/stdin
 	jsonnet $1 | jq -r '.osQueries.multipleRows[] | "osqueryFactsMultipleRows \(.name) \"\(.query)\""' | source /dev/stdin
+	jsonnet $1 | jq -r '.shellEvals[] | "shellEvalFacts \(.name) \(.key) \"\(.evalAsTextValue)\""' | source /dev/stdin
 }
 
 echo "Generating facts in $DEST_PATH using JSONNET_PATH $JSONNET_PATH"

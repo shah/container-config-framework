@@ -8,4 +8,9 @@
       { name: "interfaces-localhost", query: "select * from interface_addresses" }
     ],
   },
+
+  shellEvals: 
+  [
+    { name: "docker-localhost", key: "dockerPrivateBridgeIPAddress", evalAsTextValue: "docker network inspect --format='{{range .IPAM.Config}}{{.Gateway}}{{end}}' bridge" },
+  ],
 }
