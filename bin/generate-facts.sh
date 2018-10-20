@@ -29,7 +29,7 @@ shellEvalFacts() {
 		existingValues="{}"
 	fi
 	textValue=`eval $3`;	
-	echo $existingValues | jq --arg key "$2" --arg value "$textValue" '. + {($key) : $value}'
+	echo $existingValues | jq --arg key "$2" --arg value "$textValue" '. + {($key) : $value}' > $destFile
 }
 
 generateFacts() {
