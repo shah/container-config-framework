@@ -11,7 +11,7 @@
 
   shellEvals: 
   [
-    { name: "docker-localhost", key: "dockerHostIPAddress", evalAsTextValue: "/sbin/ip -4 -o addr show dev eth0| awk \"{split($4,a,'/');print a[1]}\"" },
+    { name: "docker-localhost", key: "dockerHostIPAddress", evalAsTextValue: "/sbin/ip -4 -o addr show dev eth0| awk '{split($4,a,\\\"/\\\");print a[1]}'" },
     { name: "docker-localhost", key: "dockerBridgeNetworkGatewayIPAddress", evalAsTextValue: "docker network inspect --format='{{range .IPAM.Config}}{{.Gateway}}{{end}}' bridge" },
   ],
 }
