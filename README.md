@@ -17,7 +17,7 @@ Set **CCF_HOME** to where the CCF should be installed, defaults to /opt/containe
 set this to something other than the default, you must make sure it's set whenever the Makefile is called, 
 too because all CCF binaries and libs use the variable to indicate the installation location.
 
-## Setup and Upgrade of the CC Framework
+## How to Install the CCF
 
 Intial setup in default location:
 
@@ -28,7 +28,13 @@ Intial setup in another location (e.g. /etc/CCF):
     export CCF_HOME=/etc/CCF
     curl https://raw.githubusercontent.com/shah/container-config-framework/master/bin/setup-CCF.sh | bash
 
-To upgrade:
+## How to Upgrade the CCF
+
+The directory where CCF is installed is considered read-only. Any configuration files you add should be 
+placed outside of the installation directory. The **JSONNET_PATH**, **CCF_FACTS_FILES**, and other variables 
+can be used to override configuration files so that your files instead of the defaults are used. 
+
+Therefore, to upgrade you just:
 
     sudo rm -rf /opt/container-config-framework
     curl https://raw.githubusercontent.com/shah/container-config-framework/master/bin/setup-CCF.sh | bash
@@ -68,10 +74,10 @@ anywhere but follows these conventions:
 These are the most useful environment variables to set before calling the Makefile, all of them have
 sensible defaults:
 
-* **JSONNET_PATH** -- colon-separated path which indicates where Jsonnet configs should be searched
-* **CCF_HOME** -- where the CCF is installed (default is /opt/container-config-framework)
-* **CCF_LOG_LEVEL** - set to "INFO" to see verbose messages as CCF does its job (default is NONE)
-* **CCF_FACTS_FILES** -- see below "Facts Generator" for explanation
+* **JSONNET_PATH** is a colon-separated path which indicates where Jsonnet configs should be searched.
+* **CCF_HOME** is where the CCF is installed (default is /opt/container-config-framework).
+* **CCF_LOG_LEVEL** should be set to INFO to see verbose messages as CCF does its job (default is NONE).
+* **CCF_FACTS_FILES** is where CCF stores fact files - see "Facts Generator" section below for explanation.
 
 ## Container Makefile
 
@@ -79,7 +85,7 @@ Each container definition home ("CDH") directory may contain a Makefile which is
 CCF_HOME/lib/Makefile. This allows each container to have it's own Makefile but conveniently
 links to a master Makefile unless the container has something special.
 
-If the CDH does not contain a Makefile, then the ccfmake convenience script may be used as a replacement.
+If the CDH does not contain a Makefile, then the **ccfmake** convenience script may be used as a replacement.
 
 The Makefile has a simple plugin model:
 
@@ -139,7 +145,10 @@ Here's an example of the default $(CCF_HOME)/etc/facts-generator.ccf-conf.jsonne
         ],
     }
 
-You can pass one more facts generator files, colon-separated, via the CCF_FACTS_FILES environment variable.
+You can pass one or more facts generator files, colon-separated, via the CCF_FACTS_FILES environment variable.
+The default value in the Makefile is:
+
+    CCF_FACTS_FILES ?= $(CCF_HOME)/etc/facts-generator.ccf-conf.jsonnet:$(HOME)/.ccf/etc/facts-generator.ccf-conf.jsonnet
 
 ## Configuration Files
 
