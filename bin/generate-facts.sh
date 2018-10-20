@@ -3,6 +3,7 @@
 # This script is executed by the Makefile before generating the configurations from container.ccf-defn.jsonnet
 # Expecting environment variables upon entry:
 # CCF_HOME
+# CCF_LOG_LEVEL
 # CCF_FACTS_FILES
 # CONTAINER_DEFN_HOME
 # CONTAINER_NAME
@@ -13,6 +14,12 @@ if [ ! -d "$DEST_PATH" ]; then
     echo "A CCF container definition facts destination directory path is expected as DEST_PATH."
     exit 1
 fi
+
+logInfo() {
+	if [ $CCF_LOG_LEVEL = 'INFO' ];
+		echo "$*"
+	fi
+}
 
 osqueryFactsSingleRow() {
 	osqueryi --json "$2" | jq '.[0]' > $DEST_PATH/$1.ccf-facts.json
@@ -26,7 +33,7 @@ shellEvalFacts() {
 	destFile=$DEST_PATH/$1.ccf-facts.json
 	touch $destFile
 	existingValues=$(<$destFile)
-	if [  -z "$existingValues" ]; then
+	if [ -z "$existingValues" ]; then
 		existingValues="{}"
 	fi
 	textValue=`eval $3`;	
@@ -34,7 +41,7 @@ shellEvalFacts() {
 }
 
 generateFacts() {
-	echo "Generating facts from $1 into $DEST_PATH using JSONNET_PATH $JSONNET_PATH"
+	logInfo "Generating facts from $1 into $DEST_PATH using JSONNET_PATH $JSONNET_PATH"
 	jsonnet $1 | jq -r '.osQueries.singleRow[] | "osqueryFactsSingleRow \(.name) \"\(.query)\""' | source /dev/stdin
 	jsonnet $1 | jq -r '.osQueries.multipleRows[] | "osqueryFactsMultipleRows \(.name) \"\(.query)\""' | source /dev/stdin
 	jsonnet $1 | jq -r '.shellEvals[] | "shellEvalFacts \(.name) \(.key) \"\(.evalAsTextValue)\""' | source /dev/stdin
@@ -45,7 +52,7 @@ IFS=':' read -ra FF <<< "$CCF_FACTS_FILES"
      if [ -f "$ff" ]; then
          generateFacts "$ff"
      else
-         echo "Skipping facts file $ff from CCF_FACTS_FILES, does not exist."
+         logInfo "Skipping facts file $ff from CCF_FACTS_FILES, does not exist."
      fi
  done
 
@@ -64,4 +71,4 @@ jsonnet --ext-str CCF_HOME=$CCF_HOME \
 		--output-file $DEST_PATH/$CONTEXT_FACTS_GENERATED_FILE \
 		$CONTEXT_FACTS_JSONNET_TMPL
 
-echo "Generated $CONTEXT_FACTS_GENERATED_FILE from $CONTEXT_FACTS_JSONNET_TMPL"
+logInfo "Generated $CONTEXT_FACTS_GENERATED_FILE from $CONTEXT_FACTS_JSONNET_TMPL"
