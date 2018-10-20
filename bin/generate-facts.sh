@@ -16,7 +16,7 @@ if [ ! -d "$DEST_PATH" ]; then
 fi
 
 logInfo() {
-	if [ $CCF_LOG_LEVEL = 'INFO' ];
+	if [ $CCF_LOG_LEVEL = 'INFO' ]; then
 		echo "$*"
 	fi
 }
