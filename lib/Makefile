@@ -15,7 +15,8 @@ CONTAINER_IS_RUNNING := $(shell docker ps --filter "name=$(CONTAINER_NAME)" --fi
 OSQUERY_INSTALLED := $(shell command -v osqueryi 2> /dev/null)
 
 CCF_HOME ?= /opt/container-config-framework
-JSONNET_PATH ?= $(HOME)/.ccf/secrets:$(HOME)/.ccf/open:$(CCF_HOME)/lib:$(CCF_HOME)/etc
+CCF_FACTS_FILES ?= $(CCF_HOME)/etc/facts-generator.ccf-conf.jsonnet:$(HOME)/.ccf/etc/facts-generator.ccf-conf.jsonnet
+JSONNET_PATH ?= $(HOME)/.ccf/secrets:$(HOME)/.ccf/etc:$(CCF_HOME)/lib:$(CCF_HOME)/etc
 
 # This is the primary JSonnet configuration file, it creates all the container's
 # definition and configuration files using Jsonnet -m (multi-file) strategy.

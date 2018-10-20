@@ -3,6 +3,7 @@
 # This script is executed by the Makefile before generating the configurations from container.ccf-defn.jsonnet
 # Expecting environment variables upon entry:
 # CCF_HOME
+# CCF_FACTS_FILES
 # CONTAINER_DEFN_HOME
 # CONTAINER_NAME
 # JSONNET_PATH
@@ -33,14 +34,16 @@ shellEvalFacts() {
 }
 
 generateFacts() {
+	echo "Generating facts from $1 into $DEST_PATH using JSONNET_PATH $JSONNET_PATH"
 	jsonnet $1 | jq -r '.osQueries.singleRow[] | "osqueryFactsSingleRow \(.name) \"\(.query)\""' | source /dev/stdin
 	jsonnet $1 | jq -r '.osQueries.multipleRows[] | "osqueryFactsMultipleRows \(.name) \"\(.query)\""' | source /dev/stdin
 	jsonnet $1 | jq -r '.shellEvals[] | "shellEvalFacts \(.name) \(.key) \"\(.evalAsTextValue)\""' | source /dev/stdin
 }
 
-echo "Generating facts in $DEST_PATH using JSONNET_PATH $JSONNET_PATH"
-
-generateFacts $CCF_HOME/etc/facts-generator.ccf-conf.jsonnet
+IFS=';' read -ra FF <<< "$CCF_FACTS_FILES"
+for i in "${FF[@]}"; do
+	generateFacts "$i"
+done
 
 CONTEXT_FACTS_JSONNET_TMPL=${CONTEXT_FACTS_JSONNET_TMPL:-$CCF_HOME/etc/context.ccf-facts.ccf-tmpl.jsonnet}
 CONTEXT_FACTS_GENERATED_FILE=${CONTEXT_FACTS_GENERATED_FILE:-context.ccf-facts.json}
