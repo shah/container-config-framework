@@ -22,7 +22,9 @@ osqueryFactsMultipleRows() {
 }
 
 shellEvalFacts() {
+	echo "Evaluating: \"$3\""
 	textValue=`eval "$3"`;
+	echo " Evaluated: \"$textValue\""
 	if [ -f $DEST_PATH/$1.ccf-facts.json ]; then
 		cat $DEST_PATH/$1.ccf-facts.json | jq --arg value "$textValue" '.["$2"] = \$value' > $DEST_PATH/$1.ccf-facts.json
 	else
