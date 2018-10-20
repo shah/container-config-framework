@@ -11,21 +11,33 @@ Prerequisites:
 * Linux server
 * user with sudo privileges and Docker permissions
 
-Useful environment variables:
+Useful environment variables during installation:
 
-* **CCF_HOME**: defaults to /opt/container-config-framework
-* **JSONNET_PATH**: defaults to $(HOME)/.ccf/secrets:$(HOME)/.ccf/open:$(CCF_HOME)/etc
+Set **CCF_HOME** to where the CCF should be installed, defaults to /opt/container-config-framework. If you
+set this to something other than the default, you must make sure it's set whenever the Makefile is called, 
+too because all CCF binaries and libs use the variable to indicate the installation location.
 
-Intial setup:
+## Setup and Upgrade of the CC Framework
 
+Intial setup in default location:
+
+    curl https://raw.githubusercontent.com/shah/container-config-framework/master/bin/setup-CCF.sh | bash
+
+Intial setup in another location (e.g. /etc/CCF):
+
+    export CCF_HOME=/etc/CCF
     curl https://raw.githubusercontent.com/shah/container-config-framework/master/bin/setup-CCF.sh | bash
 
 To upgrade:
 
-    cd /opt/container-config-framework
-    sudo git pull
+    sudo rm -rf /opt/container-config-framework
+    curl https://raw.githubusercontent.com/shah/container-config-framework/master/bin/setup-CCF.sh | bash
 
-    cd lib
+## Checking Dependencies
+
+CCF has some important dependencies. After installation, you should run:
+
+    cd /opt/container-config-framework/lib
     make check-dependencies
 
 ## Conventions
@@ -50,6 +62,16 @@ anywhere but follows these conventions:
   is not symlink'd. This script is symlink'd as /usr/bin/ccfmake by the installer.
 * **CCF_HOME/bin/ccfinit** is a convenience script to download container definition files from a common repo.
   This script is symlink'd as /usr/bin/ccfinit by the installer.
+
+## Environment Variables
+
+These are the most useful environment variables to set before calling the Makefile, all of them have
+sensible defaults:
+
+* **JSONNET_PATH** -- colon-separated path which indicates where Jsonnet configs should be searched
+* **CCF_HOME** -- where the CCF is installed (default is /opt/container-config-framework)
+* **CCF_LOG_LEVEL** - set to "INFO" to see verbose messages as CCF does its job (default is NONE)
+* **CCF_FACTS_FILES** -- see below "Facts Generator" for explanation
 
 ## Container Makefile
 
@@ -89,7 +111,35 @@ The Makefile generates these files:
 
 * **.ccf_container.ccf-defn.jsonnet_generated**, a text file that contains the list of files generated
 * **.ccf_delete_generated_files.sh**, which is executed by the **clean** target
+* **.ccf_facts** directory, which contains generated facts (see below)
 * **.gitignore**, to make sure generated files are not tracked or committed
+
+## Facts Generator
+
+Before the container.ccf-defn.jsonnet file is interpreted, there are a series of "facts generator" scripts that
+can be run to pre-populate configuration entries from the environment. Facts can be retrieved from osquery or
+as arbitrary shell scripts.
+
+Here's an example of the default $(CCF_HOME)/etc/facts-generator.ccf-conf.jsonnet configuration file:
+
+    {
+        osQueries: {
+            singleRow : [
+                { name: "system-localhost", query: "select * from system_info" }
+                { name: "eth0-interface-localhost", query: "select * from interface_addresses where interface = 'eth0'" }
+            ],
+            multipleRows : [
+                { name: "interfaces-localhost", query: "select * from interface_addresses" }
+            ],
+        },
+
+        shellEvals: [
+            { name: "docker-localhost", key: "dockerHostIPAddress", evalAsTextValue: "/sbin/ip -4 -o addr show dev eth0| awk '{split(\\$4,a,\\\"/\\\");print a[1]}'" },
+            { name: "docker-localhost", key: "dockerBridgeNetworkGatewayIPAddress", evalAsTextValue: "docker network inspect --format='{{range .IPAM.Config}}{{.Gateway}}{{end}}' bridge" },
+        ],
+    }
+
+You can pass one more facts generator files, colon-separated, via the CCF_FACTS_FILES environment variable.
 
 ## Configuration Files
 
