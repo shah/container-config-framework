@@ -22,13 +22,15 @@ osqueryFactsMultipleRows() {
 }
 
 shellEvalFacts() {
-	existingValues=`cat $DEST_PATH/$1.ccf-facts.json`
+	destFile=$DEST_PATH/$1.ccf-facts.json
+	touch $destFile
+	existingValues=$(<$destFile)
 	if [  -z "$existingValues" ]; then
 		existingValues="{}"
 	fi
 	textValue=`eval $3`;	
-	echo existingValues | jq --arg key "$2" --arg value "$textValue" '. + {($key) : $value}'
-	echo existingValues | jq --arg key "$2" --arg value "$textValue" '. + {($key) : $value}' > $DEST_PATH/$1.ccf-facts.json
+	echo $existingValues | jq --arg key "$2" --arg value "$textValue" '. + {($key) : $value}'
+	echo $existingValues | jq --arg key "$2" --arg value "$textValue" '. + {($key) : $value}' > $destFile
 }
 
 generateFacts() {
