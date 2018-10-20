@@ -79,6 +79,9 @@ configure: generate-container-conf
 ## Opposite of configure, remove all generated artifacts and "reset" directory
 unconfigure: clean-generated-container-conf
 
+## Run unconfigure and then configure (clean and re-create)
+reconfigure: clean-generated-container-conf configure
+
 .ONESHELL:
 ## Start the container and all dependencies
 start: configure
