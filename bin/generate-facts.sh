@@ -40,7 +40,7 @@ generateFacts() {
 	jsonnet $1 | jq -r '.shellEvals[] | "shellEvalFacts \(.name) \(.key) \"\(.evalAsTextValue)\""' | source /dev/stdin
 }
 
-IFS=';' read -ra FF <<< "$CCF_FACTS_FILES"
+IFS=':' read -ra FF <<< "$CCF_FACTS_FILES"
 for i in "${FF[@]}"; do
 	if [-f $i]; then 
 		generateFacts "$i"
