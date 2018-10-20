@@ -41,13 +41,13 @@ generateFacts() {
 }
 
 IFS=':' read -ra FF <<< "$CCF_FACTS_FILES"
-for i in "${FF[@]}"; do
-	if [-f $i]; then 
-		generateFacts "$i"
-	else
-		echo "Skipping facts file $1 from CCF_FACTS_FILES, does not exist."
-	fi
-done
+ for ff in "${FF[@]}"; do
+     if [ -f "$ff" ]; then
+         generateFacts "$ff"
+     else
+         echo "Skipping facts file $ff from CCF_FACTS_FILES, does not exist."
+     fi
+ done
 
 CONTEXT_FACTS_JSONNET_TMPL=${CONTEXT_FACTS_JSONNET_TMPL:-$CCF_HOME/etc/context.ccf-facts.ccf-tmpl.jsonnet}
 CONTEXT_FACTS_GENERATED_FILE=${CONTEXT_FACTS_GENERATED_FILE:-context.ccf-facts.json}
