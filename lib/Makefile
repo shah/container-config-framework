@@ -233,7 +233,7 @@ else
 	osqueryi --version
 endif
 
-TARGET_MAX_CHAR_NUM=10
+TARGET_MAX_CHAR_NUM=15
 # All targets should have a ## Help text above the target and they'll be automatically collected
 # Show help, using auto generator from https://gist.github.com/prwhite/8168133
 help: generate-container-conf
