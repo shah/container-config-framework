@@ -26,7 +26,7 @@ shellEvalFacts() {
 	if [ -f $DEST_PATH/$1.ccf-facts.json ]; then
 		cat $DEST_PATH/$1.ccf-facts.json | jq --arg value "$textValue" '.["$2"] = $value' > $DEST_PATH/$1.ccf-facts.json
 	else
-		echo "{\"$2\": \"$textValue\"}" | jq > $DEST_PATH/$1.ccf-facts.json
+		echo "{\"$2\": \"$textValue\"}" > $DEST_PATH/$1.ccf-facts.json
 	fi
 }
 

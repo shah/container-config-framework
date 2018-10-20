@@ -11,6 +11,7 @@
 
   shellEvals: 
   [
-    { name: "docker-localhost", key: "dockerPrivateBridgeIPAddress", evalAsTextValue: "docker network inspect --format='{{range .IPAM.Config}}{{.Gateway}}{{end}}' bridge" },
+    { name: "docker-localhost", key: "dockerBridgeNetworkGatewayIPAddress", evalAsTextValue: "docker network inspect --format='{{range .IPAM.Config}}{{.Gateway}}{{end}}' bridge" },
+    { name: "docker-localhost", key: "dockerHostNetworkGatewayIPAddress", evalAsTextValue: "docker network inspect --format='{{range .IPAM.Config}}{{.Gateway}}{{end}}' host" },
   ],
 }
