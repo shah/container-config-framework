@@ -8,8 +8,9 @@ Dockerfile, docker-compose.yml, and related artifacts.
 
 Prerequisites:
 
-* Linux server
+* Linux server, tested only on Ubuntun 18.04
 * user with sudo privileges and Docker permissions
+* GNU Make, git, curl, wget, Jsonnet, jq, Docker, Docker Compose, osQuery
 
 Useful environment variables during installation:
 
