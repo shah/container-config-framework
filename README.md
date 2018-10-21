@@ -89,13 +89,15 @@ If the CDH does not contain a Makefile, then the **ccfmake** convenience script 
 
 The Makefile has a simple plugin model:
 
+* If a file named **before_configure.make-plugin.sh** exists in the container definition home directory,
+  it is run right before the Makefile's configure target (*before* generating all artifacts).
 * If a file named **after_configure.make-plugin.sh** exists in the container definition home directory,
-  it is run right after the Makefile's configure target (after generating all artifacts).
+  it is run right after the Makefile's configure target (*after* generating all artifacts).
 * If a file named **container.make.inc** exists in the container definition home directory, it is
   included in the Makefile -- effectively allowing you to add targets. You can also redefine targets
   but you'll get a warning.
 * If a file named **after_start.make-plugin.sh** exists in the container definition home directory, it
-  is run immediately after the make start target concludes. This allows you to run some post-start
+  is run immediately after the *make start* target concludes. This allows you to run some post-start
   functionality like checking the health of a container or ensuring other dependencies are executed.
 
 The Makefile has these typical targets:
@@ -123,8 +125,12 @@ The Makefile generates these files:
 ## Facts Generator
 
 Before the container.ccf-defn.jsonnet file is interpreted, there are a series of "facts generator" scripts that
-can be run to pre-populate configuration entries from the environment. Facts can be retrieved from osquery or
-as arbitrary shell scripts.
+can be run to pre-populate configuration entries from the environment. Facts can be retrieved from osquery, from
+the environment, or as arbitrary shell scripts snippets.
+
+The Makefile uses this script by default, but it can be overridden:
+
+    CCF_FACTS_GENERATOR_SCRIPT ?= $(CCF_HOME)/bin/generate-facts.sh
 
 Here's an example of the default $(CCF_HOME)/etc/facts-generator.ccf-conf.jsonnet configuration file:
 
@@ -146,9 +152,11 @@ Here's an example of the default $(CCF_HOME)/etc/facts-generator.ccf-conf.jsonne
     }
 
 You can pass one or more facts generator files, colon-separated, via the CCF_FACTS_FILES environment variable.
-The default value in the Makefile is:
+The default value in the Makefile calls these source files, in this order:
 
-    CCF_FACTS_FILES ?= $(CCF_HOME)/etc/facts-generator.ccf-conf.jsonnet:$(HOME)/.ccf/etc/facts-generator.ccf-conf.jsonnet
+    $(CCF_HOME)/etc/facts-generator.ccf-conf.jsonnet
+    $(HOME)/.ccf/etc/facts-generator.ccf-conf.jsonnet
+    $(CONTAINER_DEFN_HOME)/facts-generator.ccf-conf.jsonnet
 
 ## Configuration Files
 
