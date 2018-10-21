@@ -4,6 +4,7 @@
 	CCF_HOME : std.extVar('CCF_HOME'),
 	CCF_FACTS_FILES : std.extVar('CCF_FACTS_FILES'),
 	CCF_FACTS_DEST_PATH : std.extVar('CCF_FACTS_DEST_PATH'),
+	CCF_LOG_LEVEL : std.extVar('CCF_LOG_LEVEL'),
 
 	GENERATED_ON : std.extVar('GENERATED_ON'),
 	JSONNET_PATH : std.extVar('JSONNET_PATH'),
