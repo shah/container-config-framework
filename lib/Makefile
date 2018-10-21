@@ -16,7 +16,7 @@ CONTAINER_IS_RUNNING := $(shell docker ps --filter "name=$(CONTAINER_NAME)" --fi
 
 CCF_HOME ?= /opt/container-config-framework
 CCF_LOG_LEVEL ?= "NONE"
-CCF_FACTS_FILES ?= $(CCF_HOME)/etc/facts-generator.ccf-conf.jsonnet:$(HOME)/.ccf/etc/facts-generator.ccf-conf.jsonnet:$(CONTAINER_DEFN_HOME)/facts-generator.ccf-conf.jsonnet
+CCF_FACTS_FILES ?= $(CCF_HOME)/etc/common.ccf-factsgen.jsonnet:$(CONTAINER_DEFN_HOME)/container.ccf-factsgen.jsonnet
 JSONNET_PATH ?= $(HOME)/.ccf/secrets:$(HOME)/.ccf/etc:$(CCF_HOME)/lib:$(CCF_HOME)/etc
 
 # This is the primary JSonnet configuration file, it creates all the container's

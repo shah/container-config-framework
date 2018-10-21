@@ -154,9 +154,8 @@ Here's an example of the default $(CCF_HOME)/etc/facts-generator.ccf-conf.jsonne
 You can pass one or more facts generator files, colon-separated, via the CCF_FACTS_FILES environment variable.
 The default value in the Makefile calls these source files, in this order:
 
-    $(CCF_HOME)/etc/facts-generator.ccf-conf.jsonnet
-    $(HOME)/.ccf/etc/facts-generator.ccf-conf.jsonnet
-    $(CONTAINER_DEFN_HOME)/facts-generator.ccf-conf.jsonnet
+    $(CCF_HOME)/etc/common.ccf-factsgen.jsonnet
+    $(CONTAINER_DEFN_HOME)/container.ccf-factsgen.jsonnet
 
 ## Configuration Files
 
