@@ -1,6 +1,7 @@
 // This is a template for the container.conf.jsonnet file that is generated
 // automatically for each container.
 {
+	CCF_VERSION : std.extVar('CCF_VERSION'),
 	CCF_HOME : std.extVar('CCF_HOME'),
 	CCF_FACTS_FILES : std.extVar('CCF_FACTS_FILES'),
 	CCF_FACTS_DEST_PATH : std.extVar('CCF_FACTS_DEST_PATH'),

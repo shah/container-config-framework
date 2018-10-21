@@ -2,6 +2,7 @@
 # symlink'd from a container directory as "Makefile"
 # All useful variables that can be overridden in the environment start with CCF_*
 
+CCF_VERSION := 1.0.0
 SHELL := /bin/bash
 MAKEFLAGS := silent
 
@@ -60,7 +61,7 @@ pre-configure:
 .ONESHELL:
 generate-facts: pre-configure
 	$(call logInfo,Running $(CCF_FACTS_GENERATOR_SCRIPT)$(comma) dest $(CCF_FACTS_DEST_PATH_RELATIVE))
-	CCF_HOME=$(CCF_HOME) CCF_FACTS_FILES=$(CCF_FACTS_FILES) CCF_LOG=$(CCF_LOG) \
+	CCF_VERSION=$(CCF_VERSION) CCF_HOME=$(CCF_HOME) CCF_FACTS_FILES=$(CCF_FACTS_FILES) CCF_LOG=$(CCF_LOG) \
 	    CONTAINER_DEFN_HOME=$(CONTAINER_DEFN_HOME) CONTAINER_NAME=$(CONTAINER_NAME) \
 	    JSONNET_PATH="$(JSONNET_PATH)" DEST_PATH=$(CCF_FACTS_DEST_PATH) \
 		bash $(CCF_FACTS_GENERATOR_SCRIPT)

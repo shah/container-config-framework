@@ -2,6 +2,7 @@
 
 # This script is executed by the Makefile before generating the configurations from container.ccf-defn.jsonnet
 # Expecting environment variables upon entry:
+# CCF_VERSION
 # CCF_HOME
 # CCF_LOG_LEVEL
 # CCF_FACTS_FILES
@@ -59,7 +60,8 @@ IFS=':' read -ra FF <<< "$CCF_FACTS_FILES"
 CONTEXT_FACTS_JSONNET_TMPL=${CONTEXT_FACTS_JSONNET_TMPL:-$CCF_HOME/etc/context.ccf-facts.ccf-tmpl.jsonnet}
 CONTEXT_FACTS_GENERATED_FILE=${CONTEXT_FACTS_GENERATED_FILE:-context.ccf-facts.json}
 
-jsonnet --ext-str CCF_HOME=$CCF_HOME \
+jsonnet --ext-str CCF_VERSION=$CCF_VERSION \
+		--ext-str CCF_HOME=$CCF_HOME \
 		--ext-str CCF_LOG_LEVEL=$CCF_LOG_LEVEL \
 		--ext-str CCF_FACTS_FILES=$CCF_FACTS_FILES \
 		--ext-str CCF_FACTS_DEST_PATH=$DEST_PATH \
