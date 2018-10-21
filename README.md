@@ -162,3 +162,10 @@ The default value in the Makefile calls these source files, in this order:
 CCF generates Dockerfile, docker-compose.yml, and a variety of other configuration files using Makefiles
 and the [Jsonnet data templating language](https://jsonnet.org/). When Jsonnet runs, it uses the 
 JSONNET_PATH Makefile variable defined in CCF_HOME/lib/Makefile, but it can be overridden.
+
+The default path is as follows, the earlier path in the list wins:
+
+    $(HOME)/.ccf/secrets
+    $(HOME)/.ccf/etc
+    $(CCF_HOME)/lib
+    $(CCF_HOME)/etc
