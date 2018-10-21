@@ -60,6 +60,9 @@ CONTEXT_FACTS_JSONNET_TMPL=${CONTEXT_FACTS_JSONNET_TMPL:-$CCF_HOME/etc/context.c
 CONTEXT_FACTS_GENERATED_FILE=${CONTEXT_FACTS_GENERATED_FILE:-context.ccf-facts.json}
 
 jsonnet --ext-str CCF_HOME=$CCF_HOME \
+		--ext-str CCF_LOG_LEVEL=$CCF_LOG_LEVEL \
+		--ext-str CCF_FACTS_FILES=$CCF_FACTS_FILES \
+		--ext-str CCF_FACTS_DEST_PATH=$DEST_PATH \
 		--ext-str GENERATED_ON="`date`" \
 		--ext-str JSONNET_PATH=$JSONNET_PATH \
 		--ext-str containerName=$CONTAINER_NAME \
