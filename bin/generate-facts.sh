@@ -11,6 +11,9 @@
 # JSONNET_PATH
 # DEST_PATH
 
+DEST_PATH_RELATIVE=`realpath --relative-to="$CONTAINER_DEFN_HOME" "$DEST_PATH"`
+DEST_FILE_EXTN=.ccf-facts.json
+
 if [ ! -d "$DEST_PATH" ]; then
     echo "A CCF container definition facts destination directory path is expected as DEST_PATH."
     exit 1
@@ -23,31 +26,31 @@ logInfo() {
 }
 
 osqueryFactsSingleRow() {
-    logInfo "Running osQuery single row, saving to $DEST_PATH/$1.ccf-facts.json: $2"
-	osqueryi --json "$2" | jq '.[0]' > $DEST_PATH/$1.ccf-facts.json
+    logInfo "Running osQuery single row, saving to $DEST_PATH_RELATIVE/$1$DEST_FILE_EXTN: $2"
+	osqueryi --json "$2" | jq '.[0]' > $DEST_PATH/$1$DEST_FILE_EXTN
 }
 
 osqueryFactsMultipleRows() {
-    logInfo "Running osQuery multi row, saving to $DEST_PATH/$1.ccf-facts.json: $2"
-	osqueryi --json "$2" > $DEST_PATH/$1.ccf-facts.json
+    logInfo "Running osQuery multi row, saving to $DEST_PATH_RELATIVE/$1$DEST_FILE_EXTN: $2"
+	osqueryi --json "$2" > $DEST_PATH/$1$DEST_FILE_EXTN
 }
 
 shellEvalFacts() {
-	destFile=$DEST_PATH/$1.ccf-facts.json
+	destFile=$DEST_PATH/$1$DEST_FILE_EXTN
 	touch $destFile
 	existingValues=$(<$destFile)
 	if [ -z "$existingValues" ]; then
-	    logInfo "Running shell eval, saving to $destFile: $2 $3"
+	    logInfo "Running shell eval, saving to $DEST_PATH_RELATIVE/$1$DEST_FILE_EXTN: $2 $3"
 		existingValues="{}"
 	else
-	    logInfo "Running shell eval, appending to $destFile: $2 $3"
+	    logInfo "Running shell eval, appending to $DEST_PATH_RELATIVE/$1$DEST_FILE_EXTN: $2 $3"
 	fi
 	textValue=`eval $3`;	
 	echo $existingValues | jq --arg key "$2" --arg value "$textValue" '. + {($key) : $value}' > $destFile
 }
 
 generateFacts() {
-	logInfo "Generating facts from $1 into $DEST_PATH using JSONNET_PATH $JSONNET_PATH"
+	logInfo "Generating facts from $1 into $DEST_PATH_RELATIVE using JSONNET_PATH $JSONNET_PATH"
 	jsonnet $1 | jq -r '.osQueries.singleRow[] | "osqueryFactsSingleRow \(.name) \"\(.query)\""' | source /dev/stdin
 	jsonnet $1 | jq -r '.osQueries.multipleRows[] | "osqueryFactsMultipleRows \(.name) \"\(.query)\""' | source /dev/stdin
 	jsonnet $1 | jq -r '.shellEvals[] | "shellEvalFacts \(.name) \(.key) \"\(.evalAsTextValue)\""' | source /dev/stdin
