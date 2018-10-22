@@ -54,7 +54,7 @@ shellEvalFacts() {
 }
 
 generateFacts() {
-	logInfo "Generating facts from ${YELLOW}$1${RESET} into ${YELLOW}$DEST_PATH_RELATIVE${RESET} using JSONNET_PATH ${GREEN}$JSONNET_PATH${RESET}"
+	logInfo "Generating facts from ${GREEN}$1${RESET} into ${YELLOW}$DEST_PATH_RELATIVE${RESET} using JSONNET_PATH ${GREEN}$JSONNET_PATH${RESET}"
 	jsonnet $1 | jq -r '.osQueries.singleRow[] | "osqueryFactsSingleRow \(.name) \"\(.query)\""' | source /dev/stdin
 	jsonnet $1 | jq -r '.osQueries.multipleRows[] | "osqueryFactsMultipleRows \(.name) \"\(.query)\""' | source /dev/stdin
 	jsonnet $1 | jq -r '.shellEvals[] | "shellEvalFacts \(.name) \(.key) \"\(.evalAsTextValue)\""' | source /dev/stdin
