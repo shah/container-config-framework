@@ -23,10 +23,12 @@ logInfo() {
 }
 
 osqueryFactsSingleRow() {
+    logInfo "Running osQuery single row, saving to $DEST_PATH/$1.ccf-facts.json: $2"
 	osqueryi --json "$2" | jq '.[0]' > $DEST_PATH/$1.ccf-facts.json
 }
 
 osqueryFactsMultipleRows() {
+    logInfo "Running osQuery multi row, saving to $DEST_PATH/$1.ccf-facts.json: $2"
 	osqueryi --json "$2" > $DEST_PATH/$1.ccf-facts.json
 }
 
@@ -35,7 +37,10 @@ shellEvalFacts() {
 	touch $destFile
 	existingValues=$(<$destFile)
 	if [ -z "$existingValues" ]; then
+	    logInfo "Running shell eval, saving to $destFile: $2 $3"
 		existingValues="{}"
+	else
+	    logInfo "Running shell eval, appending to $destFile: $2 $3"
 	fi
 	textValue=`eval $3`;	
 	echo $existingValues | jq --arg key "$2" --arg value "$textValue" '. + {($key) : $value}' > $destFile
