@@ -1,10 +1,13 @@
-local hostPrimaryEthernetInterfaceFacts = import "eth0-interface-localhost.ccf-facts.json";
+local systemFacts = import "system-localhost.ccf-facts.json";
+local dockerFacts = import "docker-localhost.ccf-facts.json";
 
 {
   domainName: 'appliance.local',
-  applianceName: 'barge',
+  defaultDockerNetworkName : 'appliance',
+  
+  applianceName: systemFacts.hostname,
   applianceHostName: $.applianceName,
   applianceFQDN: $.applianceHostName + '.' + $.domainName,
-  defaultDockerNetworkName : 'appliance',
-  defaultDockerHostIPAddr : hostPrimaryEthernetInterfaceFacts.address,
+  dockerHostIPAddr : dockerFacts.dockerHostIPAddress,
+  dockerBridgeNetworkGatewayIPAddress : dockerFacts.dockerBridgeNetworkGatewayIPAddress,
 }
