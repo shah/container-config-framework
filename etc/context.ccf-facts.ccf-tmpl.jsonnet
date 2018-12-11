@@ -6,12 +6,13 @@
 	CCF_FACTS_FILES : std.extVar('CCF_FACTS_FILES'),
 	CCF_FACTS_DEST_PATH : std.extVar('CCF_FACTS_DEST_PATH'),
 	CCF_LOG_LEVEL : std.extVar('CCF_LOG_LEVEL'),
-
+	
 	GENERATED_ON : std.extVar('GENERATED_ON'),
 	JSONNET_PATH : std.extVar('JSONNET_PATH'),
 
 	containerName : std.extVar('containerName'),
 	containerDefnHome : std.extVar('containerDefnHome'),
+	containerEngineTarget : std.extVar('containerEngineTarget'),
 	containerRuntimeConfigHome : $.containerDefnHome + "/etc",
 
 	currentUser : {
