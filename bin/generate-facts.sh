@@ -81,6 +81,7 @@ jsonnet --ext-str CCF_VERSION=$CCF_VERSION \
 		--ext-str JSONNET_PATH=$JSONNET_PATH \
 		--ext-str containerName=$CONTAINER_NAME \
 		--ext-str containerDefnHome=$CONTAINER_DEFN_HOME \
+		--ext-str containerEngineTarget=$CONTAINER_ENGINE_TARGET  \
 		--ext-str currentUserName="`whoami`" \
 		--ext-str currentUserId="`id -u`" \
 		--ext-str currentUserGroupId="id -g" \
